@@ -26,23 +26,32 @@ func TCPServer(port string) {
 	}
 	fmt.Println("waiting for TCP INFO")
 
-	connection, err := ln.Accept()
-	if err != nil {
-		fmt.Println("error Accepting in TCPServer on Port: ", port)
-	}
+	//sets the last the program will do before exiting, close the connections
+	defer ln.Close()
 
 	for {
-		fmt.Println("receiving tcp input")
-
-		message, err := bufio.NewReader(connection).ReadString('\n')
+		connection, err := ln.Accept()
 		if err != nil {
-			fmt.Println("error reading in a string ")
-			fmt.Print("Message Received:", string(message))
-
+			fmt.Println("error Accepting in TCPServer on Port: ", port)
 		}
+		go HandleIncomingTCPData(connection)
 
 	}
 
+}
+
+//HandleIncomingTCPData is a function to deal with the incoming TCP connection
+func HandleIncomingTCPData(connection net.Conn) {
+	message := ""
+	fmt.Println("receiving tcp input")
+
+	message, err := bufio.NewReader(connection).ReadString('\n')
+	if err != nil {
+		fmt.Println("error reading in a string ", err)
+
+	}
+
+	fmt.Print("Message Received:", string(message))
 }
 
 //UDPServer is a function to handle incoming TCP connections
@@ -55,6 +64,9 @@ func UDPServer(port string) {
 	if err != nil {
 		fmt.Println("error starting up UDPServer on Port: ", port, err)
 	}
+
+	//sets the last the program will do before exiting, close the connections
+	defer ln.Close()
 
 	buf := make([]byte, 1024)
 
