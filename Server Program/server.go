@@ -16,6 +16,7 @@ func main() {
 	}
 }
 
+//TCPServer is a function to handle incoming TCP connections
 func TCPServer(port string) {
 
 	fmt.Println("in TCP Server")
@@ -44,6 +45,7 @@ func TCPServer(port string) {
 
 }
 
+//UDPServer is a function to handle incoming TCP connections
 func UDPServer(port string) {
 
 	fmt.Println("in UDP Server")
