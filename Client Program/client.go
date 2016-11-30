@@ -9,35 +9,27 @@ import (
 	"sync"
 )
 
+var wg sync.WaitGroup
+
 func main() {
 	fmt.Println("Entering Client Program for CSCI 156 Project")
-	var TCPIP, UDPIP string
+	var TCPIP, UDPIP, IP string
 	if len(os.Args) == 1 {
-		TCPIP = "127.0.0.1:8082"
-		UDPIP = "127.0.0.1:8085"
+		IP = "127.0.0.1"
 	} else {
-		TCPIP = os.Args[1]
-		UDPIP = os.Args[2]
+		IP = os.Args[1]
 	}
+	TCPIP = IP + ":8082"
+	UDPIP = IP + ":8085"
 
 	fmt.Println("TCPIP IS: ", TCPIP)
 	fmt.Println("UDPIP IS: ", UDPIP)
-	var wg sync.WaitGroup
 
 	go TCPConnect(TCPIP)
 	go UDPConnect(UDPIP)
 	wg.Add(2)
 	wg.Wait()
-	// tcpconn, err := net.Dial("tcp", TCPIP)
-	// if err != nil {
-	// 	log.Println("error while dialing TCP", err, TCPIP)
-	// }
-	// tcpconn.Write(makedataforpacket("HELLO\n"))
 
-	// err = tcpconn.Close()
-	// if err != nil {
-	// 	log.Println("Closing Connection", err, TCPIP)
-	// }
 }
 
 //TCPConnect is a function that creates a TCP connection, and sends a small message
@@ -52,6 +44,7 @@ func TCPConnect(TCPIP string) {
 	if err != nil {
 		log.Println("Closing Connection", err, TCPIP)
 	}
+	defer wg.Done()
 }
 
 //UDPConnect is a function that creates a TCP connection, and sends a small message
@@ -67,6 +60,7 @@ func UDPConnect(UDPIP string) {
 	if err != nil {
 		log.Println("Closing Connection", err, UDPIP)
 	}
+	defer wg.Done()
 }
 
 //function makedataforpacket receives an integer index number,
