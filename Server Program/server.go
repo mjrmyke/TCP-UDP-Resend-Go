@@ -70,7 +70,7 @@ func StatusOfTransmission(conn net.Conn) {
 			}
 		}
 
-		time.Sleep(15 * time.Second)
+		time.Sleep(5 * time.Second)
 
 	}
 
@@ -99,19 +99,11 @@ func TCPServer(port string) {
 		fmt.Println("Accepted connection", connection)
 		go StatusOfTransmission(connection)
 
-		go func() {
-
-			for {
-				//maintain open connection
-
-			}
-		}()
-
 	}
 
 }
 
-//HandleIncomingTCPData is a function to deal with the incoming TCP connection
+//HandleIncomingData is a function to deal with the incoming TCP connection
 func HandleIncomingData(Packets chan UDPPacket) {
 	fmt.Println("preparing to handle incoming tcp data, entering loop")
 	for {
@@ -177,12 +169,11 @@ func UDPServer(port string) {
 	if err != nil {
 		fmt.Println("error starting up UDP on Port: ", port, err)
 	}
-	udpwg.Add(1)
-	err = conn.SetReadBuffer(10000)
+	err = conn.SetReadBuffer(100000)
 	if err != nil {
 		log.Println("	err = conn.SetReadBuffer(10000)", err)
 	}
-	err = conn.SetWriteBuffer(10000)
+	err = conn.SetWriteBuffer(100000)
 	if err != nil {
 		log.Println("err = conn.SetReadBuffer(10000)", err)
 	}

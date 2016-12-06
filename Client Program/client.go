@@ -27,7 +27,7 @@ type LostPackets struct {
 
 var resendlist = make(chan Packet)
 var wg sync.WaitGroup
-var MAXPACKETS = 7000
+var MAXPACKETS = 10000
 var numretry, packetsreceived []int32
 
 func main() {
@@ -105,6 +105,7 @@ func TCPConnect(TCPIP string) {
 }
 
 func resendpackets(conn net.Conn) {
+
 	for {
 		//wait for data to resend
 		tmppacket := <-resendlist
@@ -153,7 +154,8 @@ func UDPConnect(UDPIP string) {
 			fmt.Println("sent data in UDP")
 		}
 
-		time.Sleep(1 * time.Millisecond)
+		time.Sleep(3 * time.Millisecond)
+		fmt.Println("sent packet num", k)
 
 	}
 
