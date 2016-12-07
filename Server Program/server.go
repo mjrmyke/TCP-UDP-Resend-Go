@@ -109,8 +109,8 @@ func HandleIncomingData(Packets chan UDPPacket) {
 	for {
 		// Wait for the next job to come off the queue.
 		tmppacket := <-Packets
-		// fmt.Println("got next packet off of the packet channel")
 
+		//uncomment to debug received packets
 		// fmt.Println("Received:", tmppacket)
 
 		// Send back the response.
@@ -127,7 +127,6 @@ func HandleIncomingACKs() {
 	for {
 		// Wait for the next job to come off the queue.
 		tmpacknum := <-ackchan
-		// fmt.Println("got ack from UDP Data")
 		packets[tmpacknum] = true
 
 		if resendmap[tmpacknum] == true {
@@ -137,7 +136,7 @@ func HandleIncomingACKs() {
 		//every numpacketsrange packets, run the
 		if tmpacknum%numpacketsrange == 0 {
 
-			for j := 0; j <= 19; j++ {
+			for j := 0; j <= 49; j++ {
 				if (tmpacknum-j > 0) && (packets[tmpacknum-j] == false) {
 					fmt.Println("Need Packet Num", tmpacknum-j)
 

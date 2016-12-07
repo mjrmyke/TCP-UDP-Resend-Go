@@ -62,20 +62,6 @@ func TCPConnect(TCPIP string) {
 	fmt.Println("Initiating TCP Connection to Server")
 	for {
 
-		// message, err := bufio.NewReader(tcpconn).ReadString('\n')
-		// if err != nil {
-		// 	log.Println("error message, err := bufio.NewReader(tcpconn).ReadString('\n')", err)
-		// }
-
-		// fmt.Println("Received: ", message)
-
-		// // buf := make([]byte, 1024)
-		// // n, addr, err := udpconn.ReadFromUDP(buf)
-		// // if err != nil {
-		// // 	log.Println("error reading UDP", err, UDPIP)
-		// // }
-		// // fmt.Println("Received ", string(buf[0:n]), " from ", addr)
-
 		decoder := json.NewDecoder(tcpconn)
 		var tmplist LostPackets
 
@@ -159,10 +145,6 @@ func UDPConnect(UDPIP string) {
 
 	}
 
-	// err = udpconn.Close()
-	// if err != nil {
-	// 	log.Println("Closing Connection", err, UDPIP)
-	// }
 	defer wg.Done()
 }
 
@@ -176,10 +158,3 @@ func makedataforpacket(data []byte) []byte {
 	return bytebuffer.Bytes()
 
 }
-
-// buf := make([]byte, 1024)
-// n, addr, err := udpconn.ReadFromUDP(buf)
-// if err != nil {
-// 	log.Println("error reading UDP", err, UDPIP)
-// }
-// fmt.Println("Received ", string(buf[0:n]), " from ", addr)
